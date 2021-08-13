@@ -1,0 +1,9 @@
+# The root route on which each incoming alert enters.
+route:
+  group_wait: 10s
+  group_interval: 1m
+  repeat_interval: 1h
+  receiver: blackhole
+
+receivers:
+  - name: blackhole

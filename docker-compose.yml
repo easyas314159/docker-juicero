@@ -1,0 +1,74 @@
+version: "3.9"
+
+x-logging:
+  &logging
+  logging:
+    driver: loki
+    options:
+      loki-url: 'http://localhost:${LOKI_PORT}/loki/api/v1/push'
+
+services:
+  portainer:
+    image: portainer/portainer-ce:${PORTAINER_TAG}
+    ports:
+      - ${PORTAINER_PORT}:9000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${PATH_DATA}/portainer:/data
+    restart: unless-stopped
+    << : *logging
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:${CADVISOR_TAG}
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    restart: unless-stopped
+    << : *logging
+
+  loki:
+    image: grafana/loki:${LOKI_TAG}
+    ports:
+      - ${LOKI_PORT}:3100
+    volumes:
+      - ${PATH_DATA}/loki/:/loki/data/
+    command:
+      - '-local.chunk-directory=/loki/data/'
+    restart: unless-stopped
+    << : *logging
+
+  alertmanager:
+    image: prom/alertmanager:${ALERTMANAGER_TAG}
+    ports:
+      - ${ALERTMANAGER_PORT}:9093
+    volumes:
+      - ${PATH_CONFIG}/alertmanager/:/etc/alertmanager/
+    command: ["--config.file=/etc/alertmanager/alertmanager.yml"]
+    restart: unless-stopped
+    << : *logging
+
+  prometheus:
+    image: prom/prometheus:${PROMETHEUS_TAG}
+    ports:
+      - ${PROMETHEUS_PORT}:9090
+    volumes:
+      - ${PATH_CONFIG}/prometheus/:/etc/prometheus/
+      - ${PATH_DATA}/prometheus/:/prometheus/data/
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus/data/'
+      - '--storage.tsdb.retention.size=${PROMETHEUS_RETENTION_SIZE}'
+      - '--storage.tsdb.retention.time=${PROMETHEUS_RETENTION_TIME}'
+    restart: unless-stopped
+    << : *logging
+
+  grafana:
+    image: grafana/grafana:${GRAFANA_TAG}
+    ports:
+      - ${GRAFANA_PORT}:3000
+    volumes:
+      - ${PATH_DATA}/grafana/:/var/lib/grafana/
+    restart: unless-stopped
+    << : *logging
