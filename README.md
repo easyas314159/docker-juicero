@@ -23,6 +23,10 @@ In order to support logging docker container output to Grafana Loki you'll need 
 $> docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
 ```
 
+### Enable Docker Prometheus Metrics (optional)
+
+To configure your local docker daemon as a Prometheus target see the official [Docker Metrics with Prometheus](https://docs.docker.com/config/daemon/prometheus/#configure-docker) documentation.
+
 ### Run Docker Compose
 
 ```
