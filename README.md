@@ -1,17 +1,17 @@
 # docker-juicero
 
-A wildly over-engineered set of tooling for doing development inside docker containers.
+A wildly over-engineered set of dockerized tooling for doing development inside docker containers.
 
 ## What's Included?
 
-`docker-juicero` includes the following tools:
+`docker-juicero` includes the following services:
 
-* [Portainer CE](https://www.portainer.io/)
-* [cAdvisor](https://github.com/google/cadvisor)
-* [Grafana Loki](https://grafana.com/oss/loki/)
-* [alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/)
-* [prometheus](https://prometheus.io/)
-* [Grafana](https://grafana.com/)
+* `portainer` (localhost:9000) - [Portainer CE](https://www.portainer.io/)
+* `loki` (localhost:3100) - [Grafana Loki](https://grafana.com/oss/loki/)
+* `alertmanager` (localhost:9093) - [alertmanager](https://prometheus.io/docs/alerting/latest/alertmanager/)
+* `prometheus` (localhost:9090) - [prometheus](https://prometheus.io/)
+* `grafana` (localhost:3000) - [Grafana](https://grafana.com/)
+* `cadvisor` - [cAdvisor](https://github.com/google/cadvisor)
 
 ## Usage
 
@@ -23,7 +23,7 @@ In order to support logging docker container output to Grafana Loki you'll need 
 $> docker plugin install grafana/loki-docker-driver:latest --alias loki --grant-all-permissions
 ```
 
-### Run Docker
+### Run Docker Compose
 
 ```
 $> git clone https://github.com/easyas314159/docker-juicero.git
