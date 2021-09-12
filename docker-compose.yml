@@ -69,6 +69,8 @@ services:
       - ${GRAFANA_PORT}:3000
     volumes:
       - ${PATH_CONFIG}/grafana/provisioning/datasources/:/etc/grafana/provisioning/datasources/
+      - ${PATH_CONFIG}/grafana/provisioning/dashboards/:/etc/grafana/provisioning/dashboards/
+      - ${PATH_CONFIG}/grafana/dashboards/:/etc/grafana/dashboards/
       - ${PATH_DATA}/grafana/:/var/lib/grafana/
     restart: unless-stopped
     << : *logging
