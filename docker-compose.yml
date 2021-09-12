@@ -37,7 +37,6 @@ services:
     command:
       - '-config.file=/etc/loki/local-config.yaml'
     restart: unless-stopped
-    << : *logging
 
   alertmanager:
     image: prom/alertmanager:${ALERTMANAGER_TAG}
