@@ -33,9 +33,9 @@ services:
     ports:
       - ${LOKI_PORT}:3100
     volumes:
-      - ${PATH_DATA}/loki/:/loki/data/
+      - ${PATH_DATA}/loki/:/loki/
     command:
-      - '-local.chunk-directory=/loki/data/'
+      - '-config.file=/etc/loki/local-config.yaml'
     restart: unless-stopped
     << : *logging
 
